@@ -1,0 +1,19 @@
+[project]
+name = "cipherlab"
+version = "0.1.0"
+description = "CipherLab — pycryptodome로 현대 암호(3DES/AES/ARC4, 예정: RSA)를 실습하는 학습용 웹 앱"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.0",
+    "pycryptodome==3.23.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

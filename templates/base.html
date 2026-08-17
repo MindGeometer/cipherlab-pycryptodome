@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}CipherLab{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: "#05060a",
+            panel: "#0c0f18",
+            edge: "#1b2233",
+            neon: { DEFAULT: "#22e0d6", soft: "#5eead4" },
+            magenta: "#f472b6",
+            violet: "#8b5cf6",
+          },
+          fontFamily: {
+            mono: ["'JetBrains Mono'", "'SFMono-Regular'", "ui-monospace", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="min-h-screen bg-base text-slate-200 font-[Inter] antialiased selection:bg-neon/30">
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <header class="relative z-10 border-b border-edge/60 backdrop-blur-sm">
+    <div class="mx-auto max-w-5xl px-5 h-16 flex items-center justify-between">
+      <a href="{{ url_for('index') }}" class="flex items-center gap-2 group">
+        <span class="text-neon text-xl font-mono font-bold tracking-tight glow-text">&lt;/&gt;</span>
+        <span class="font-semibold tracking-tight text-slate-100">Cipher<span class="text-neon">Lab</span></span>
+      </a>
+      <nav class="flex items-center gap-1 text-sm">
+        {% for key, m in ciphers.items() %}
+        <a href="{{ url_for('cipher_page', cipher=key) }}"
+           class="px-3 py-1.5 rounded-lg transition-colors
+                  {% if cipher is defined and cipher == key %}bg-neon/15 text-neon border border-neon/30{% else %}text-slate-400 hover:text-slate-100 hover:bg-white/5 border border-transparent{% endif %}">
+          {{ m.name }}
+        </a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="relative z-10 mx-auto max-w-5xl px-5 py-10">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="relative z-10 mx-auto max-w-5xl px-5 py-8 text-center text-xs text-slate-600">
+    교육용 데모 · pycryptodome 기반 · 프로덕션 암호로 사용하지 마세요
+  </footer>
+
+  <div id="toast" class="toast"></div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

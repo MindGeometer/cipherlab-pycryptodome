@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}CipherLab — 암호화 도구{% endblock %}
+
+{% block content %}
+<section class="text-center mb-14">
+  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-edge bg-panel/60 text-xs text-slate-400 mb-5">
+    <span class="w-1.5 h-1.5 rounded-full bg-neon animate-pulse"></span>
+    pycryptodome · 3DES · AES · ARC4
+  </div>
+  <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-50">
+    Cipher<span class="text-neon glow-text">Lab</span>
+  </h1>
+  <p class="mt-4 text-slate-400 max-w-xl mx-auto">
+    pycryptodome로 현대 암호를 직접 돌려보며 배우는 학습용 실험실입니다.
+    메시지와 파일을 암호화·복호화할 암호를 선택해 시작하세요.
+  </p>
+</section>
+
+<section class="grid sm:grid-cols-3 gap-5">
+  {% for key, m in ciphers.items() %}
+  <a href="{{ url_for('cipher_page', cipher=key) }}"
+     class="card group relative p-6 rounded-2xl border border-edge bg-panel/70 hover:border-neon/50 transition-all">
+    <div class="flex items-center justify-between mb-4">
+      <span class="font-mono text-lg font-bold text-slate-100 group-hover:text-neon transition-colors">{{ m.name }}</span>
+      <span class="text-slate-600 group-hover:text-neon transition-colors">→</span>
+    </div>
+    <p class="text-sm text-slate-400 leading-relaxed mb-4">{{ m.description }}</p>
+    <div class="text-[11px] font-mono text-slate-500 border-t border-edge/60 pt-3">{{ m.tagline }}</div>
+  </a>
+  {% endfor %}
+</section>
+{% endblock %}
