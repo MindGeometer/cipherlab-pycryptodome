@@ -139,5 +139,5 @@ CipherLab/
 
 - 원저 도서: **화이트 해커를 위한 암호와 해킹**
 - 저자 소스 코드: <http://www.infopub2024.co.kr/new/sub07_01/sub07_01.asp?mon=&rec_no=1172&sub_no=0&dsp=2&lcnt=2&flg=detail&myalias=&myemail=&id=>
-- 자매 프로젝트: `crypto-toolkit-tkinter` (고전 암호를 다수 포함한 학습 도구)
+- 자매 프로젝트: [`crypto-toolkit-tkinter`](https://github.com/MindGeometer/crypto-toolkit-tkinter) (고전 암호를 다수 포함한 학습 도구)
 - 사용 라이브러리: [pycryptodome](https://www.pycryptodome.org/), [Flask](https://flask.palletsprojects.com/)
