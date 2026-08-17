@@ -15,3 +15,6 @@ uploads/*
 *.enc
 *.dec
 
+# Local agent notes
+CLAUDE.md
+

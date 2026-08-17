@@ -52,8 +52,8 @@
 ### 설치 & 실행
 
 ```bash
-git clone https://github.com/<your-account>/<repo>.git
-cd <repo>
+git clone https://github.com/MindGeometer/cipherlab-pycryptodome.git
+cd cipherlab-pycryptodome
 
 uv sync                    # 의존성 설치 (.venv 자동 생성)
 uv run python app.py       # http://127.0.0.1:5000 에서 실행
