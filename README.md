@@ -3,8 +3,7 @@
 **pycryptodome로 현대 암호를 직접 돌려보며 배우는 학습용 웹 앱**입니다.
 메시지와 파일을 여러 대칭키 암호로 암호화·복호화하면서 각 알고리즘의 동작을 눈으로 확인할 수 있습니다.
 
-고전 암호(Caesar · Vigenère · Playfair 등)를 다루는 자매 앱 `crypto-toolkit-tkinter`의 **"현대판"**에 해당하며,
-`WhiteHatPython` 책의 `Code_2-*` 예제(pycryptodome 기반)를 Flask 웹 앱으로 옮긴 것입니다.
+**『화이트 해커를 위한 암호와 해킹』** 책의 예제 코드(pycryptodome 기반)를 Flask 웹 앱으로 옮긴 것입니다.
 
 > ⚠️ **학습·교육용 데모입니다.** 아래 [보안 한계](#-보안-한계-의도적으로-남겨둠)를 반드시 읽어보세요. 실제 데이터 보호에는 사용하지 마세요.
 
@@ -112,7 +111,7 @@ CipherLab/
 | **파일 BUG 1** | 단일 청크 + `헤더+파일크기 ≥ 1024`인 파일(예: 3DES 1017~1023B)에서 filler 누락 → `encrypt()` padding 오류 | filler를 읽기 루프 이후 파일 크기 기준으로 **무조건** 추가 |
 | **파일 BUG 2** | 암호문 본문이 정확히 1024 배수일 때 마지막 청크를 못 잡아 filler가 복호 결과에 잔존 | 전체 크기로 `remaining`을 계산해 마지막 청크 판별 |
 | **멀티바이트 패딩** | 패딩을 '문자 수'로 계산해 한글 등 UTF-8 멀티바이트에서 정렬이 깨짐 | UTF-8 '바이트 수' 기준으로 계산 |
-| **3DES 메시지 패딩** | 원본 `Code_2-1`은 패딩이 없어 8배수 아닌 입력에서 crash | AES와 동일한 header+filler(블록 8) 적용 |
+| **3DES 메시지 패딩** | 원본 3DES 메시지 코드는 패딩이 없어 8배수 아닌 입력에서 crash | AES와 동일한 header+filler(블록 8) 적용 |
 | **ARC4 파일 모드** | 원본에 없던 기능 | 스트림 특성상 헤더/filler/IV 없이 청크 스트리밍으로 추가 |
 
 ---
@@ -141,6 +140,10 @@ CipherLab/
 
 ## 📚 참고
 
-- 기반 예제: *WhiteHatPython* 의 `Code_2-*` (3DES/AES/ARC4)
-- 자매 프로젝트: `crypto-toolkit-tkinter` (고전 암호 학습 도구)
+이 앱은 **『화이트 해커를 위한 암호와 해킹』** 책을 기반으로 만들었습니다.
+책 저자가 공개한 3DES/AES/ARC4 암호화·복호화 소스 코드를 Flask 웹 앱으로 재구성한 것입니다.
+
+- 원저 도서: **화이트 해커를 위한 암호와 해킹**
+- 저자 소스 코드: <http://www.infopub2024.co.kr/new/sub07_01/sub07_01.asp?mon=&rec_no=1172&sub_no=0&dsp=2&lcnt=2&flg=detail&myalias=&myemail=&id=>
+- 자매 프로젝트: `crypto-toolkit-tkinter` (고전 암호를 다수 포함한 학습 도구)
 - 사용 라이브러리: [pycryptodome](https://www.pycryptodome.org/), [Flask](https://flask.palletsprojects.com/)
