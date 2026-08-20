@@ -46,6 +46,11 @@
           {{ m.name }}
         </a>
         {% endfor %}
+        <a href="{{ url_for('sign_page') }}"
+           class="px-3 py-1.5 rounded-lg transition-colors
+                  {% if request.endpoint == 'sign_page' %}bg-violet/15 text-violet border border-violet/30{% else %}text-slate-400 hover:text-slate-100 hover:bg-white/5 border border-transparent{% endif %}">
+          전자서명
+        </a>
       </nav>
     </div>
   </header>

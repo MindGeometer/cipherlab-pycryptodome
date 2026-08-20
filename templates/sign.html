@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}전자서명 — CipherLab{% endblock %}
+
+{% block content %}
+<div id="sign-app">
+
+  <!-- 헤더 -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold tracking-tight text-slate-50">
+      <span class="font-mono text-violet glow-text" style="text-shadow: 0 0 20px rgba(139,92,246,.5);">전자서명</span>
+      <span class="text-slate-500 text-lg font-normal">Digital Signature</span>
+    </h1>
+    <p class="mt-2 text-sm text-slate-400">개인키로 메시지에 서명하고, 공개키로 서명을 검증합니다.</p>
+  </div>
+
+  <!-- 알고리즘 토글 + 에러 -->
+  <div class="flex items-center justify-between gap-3 mb-6">
+    <div class="inline-flex p-1 rounded-xl border border-edge bg-panel/70 shrink-0">
+      {% for key, label in algos.items() %}
+      <button data-algo="{{ key }}" class="algo-tab {% if loop.first %}algo-active{% endif %} px-5 py-2 rounded-lg text-sm font-medium transition-all">
+        {{ key.upper() }}
+      </button>
+      {% endfor %}
+    </div>
+    <div id="error" class="hidden px-3 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-xs text-red-300 text-right max-w-md"></div>
+  </div>
+
+  <!-- 알고리즘 레이블 -->
+  <p class="text-xs text-slate-500 mb-6 font-mono" id="algo-label">{{ algos['rsa'] }}</p>
+
+  <!-- 키 관리 (알고리즘마다 공용 패널, JS가 bits-wrap 표시/숨김) -->
+  <div class="mb-6 p-4 rounded-xl border border-edge bg-panel/70">
+    <div class="flex items-center justify-between gap-4 flex-wrap">
+      <div>
+        <div class="text-xs font-medium text-slate-400 mb-1">키쌍 상태</div>
+        <div id="sign-key-status" class="text-sm font-mono">확인 중…</div>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <div id="bits-wrap" class="flex items-center gap-1.5 text-xs text-slate-400">
+          <span>키 크기</span>
+          <div class="inline-flex p-0.5 rounded-lg border border-edge bg-panel" id="sign-bits-toggle">
+            <button data-bits="1024" class="sign-bits-tab px-2.5 py-1 rounded-md font-mono transition-all text-slate-400 hover:text-slate-100">1024</button>
+            <button data-bits="2048" class="sign-bits-tab sign-bits-active px-2.5 py-1 rounded-md font-mono transition-all">2048</button>
+          </div>
+          <span class="text-slate-600">bit</span>
+        </div>
+        <button id="btn-sign-keygen" class="btn-primary text-sm px-4 py-2">키 생성</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 서명/검증 패널 -->
+  <div class="grid gap-6">
+
+    <!-- 메시지 -->
+    <div>
+      <label class="block text-xs font-medium text-slate-400 mb-1.5">메시지</label>
+      <textarea id="sign-message" rows="4" spellcheck="false"
+                class="field font-mono resize-y" placeholder="서명할 메시지를 입력하세요…"></textarea>
+    </div>
+
+    <!-- 서명 버튼 -->
+    <div class="flex flex-wrap gap-3">
+      <button id="btn-sign" class="btn-primary">서명 생성 ↓</button>
+      <button id="btn-verify" class="btn-ghost">서명 검증 ↑</button>
+    </div>
+
+    <!-- 서명값 -->
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <label class="text-xs font-medium text-slate-400">서명값 <span class="font-mono text-slate-600">(base64)</span></label>
+        <button id="btn-sign-copy" class="text-xs text-slate-500 hover:text-neon transition-colors">복사</button>
+      </div>
+      <textarea id="sign-signature" rows="4" spellcheck="false"
+                class="field font-mono resize-y text-violet-300" placeholder="서명값이 여기에 표시됩니다…" style="color: #c4b5fd;"></textarea>
+    </div>
+
+    <!-- 검증 결과 -->
+    <div id="verify-result" class="hidden px-4 py-3 rounded-xl border text-sm font-mono font-medium text-center"></div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sign.js') }}"></script>
+{% endblock %}

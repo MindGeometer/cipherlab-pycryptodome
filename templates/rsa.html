@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}RSA — CipherLab{% endblock %}
+
+{% block content %}
+<div data-cipher="{{ cipher }}" data-uses-iv="false" id="app">
+
+  <!-- 헤더 -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold tracking-tight text-slate-50">
+      <span class="font-mono text-neon glow-text">{{ meta.name }}</span>
+      <span class="text-slate-500 text-lg font-normal">{{ meta.full_name }}</span>
+    </h1>
+    <p class="mt-2 text-sm text-slate-400">{{ meta.description }}</p>
+  </div>
+
+  <!-- 키 관리 -->
+  <div class="mb-6 p-4 rounded-xl border border-edge bg-panel/70">
+    <div class="flex items-center justify-between gap-4 flex-wrap">
+      <div>
+        <div class="text-xs font-medium text-slate-400 mb-1">키쌍 상태</div>
+        <div id="key-status" class="text-sm font-mono">확인 중…</div>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <!-- 키 크기 선택 -->
+        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+          <span>키 크기</span>
+          <div class="inline-flex p-0.5 rounded-lg border border-edge bg-panel" id="bits-toggle">
+            <button data-bits="1024" class="bits-tab px-2.5 py-1 rounded-md font-mono transition-all text-slate-400 hover:text-slate-100">1024</button>
+            <button data-bits="2048" class="bits-tab bits-active px-2.5 py-1 rounded-md font-mono transition-all">2048</button>
+          </div>
+          <span class="text-slate-600">bit</span>
+        </div>
+        <button id="btn-keygen" class="btn-primary text-sm px-4 py-2">키 생성</button>
+      </div>
+    </div>
+    <p class="mt-3 text-xs text-slate-600">
+      키를 재생성하면 기존 공개키로 암호화한 데이터는 복호화할 수 없게 됩니다.
+    </p>
+  </div>
+
+  <!-- hidden inputs — main.js creds() 호환 -->
+  <input id="keytext" type="hidden" value="" />
+  <input id="ivtext" type="hidden" value="" />
+
+  <!-- 모드 토글 + 에러 -->
+  <div class="flex items-center justify-between gap-3 mb-6">
+    <div class="inline-flex p-1 rounded-xl border border-edge bg-panel/70 shrink-0">
+      <button data-mode="message" class="mode-tab tab-active px-5 py-2 rounded-lg text-sm font-medium transition-all">메시지</button>
+      <button data-mode="file" class="mode-tab px-5 py-2 rounded-lg text-sm font-medium transition-all">파일</button>
+    </div>
+    <div id="error" class="hidden px-3 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-xs text-red-300 text-right max-w-md"></div>
+  </div>
+
+  <!-- ===== 메시지 모드 ===== -->
+  <section id="panel-message">
+    <div class="flex items-center justify-between mb-2">
+      <label class="text-xs font-medium text-slate-400">평문</label>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="text-slate-500">암호문 인코딩</span>
+        <div class="inline-flex p-0.5 rounded-lg border border-edge bg-panel">
+          <button data-enc="base64" class="enc-tab enc-active px-2.5 py-1 rounded-md font-mono transition-all">base64</button>
+          <button data-enc="hex" class="enc-tab px-2.5 py-1 rounded-md font-mono transition-all">hex</button>
+        </div>
+      </div>
+    </div>
+    <textarea id="plaintext" rows="4" spellcheck="false"
+              class="field font-mono resize-y" placeholder="암호화할 메시지를 입력하세요 (2048비트 키 기준 최대 190바이트)…"></textarea>
+
+    <div class="flex flex-wrap gap-3 my-4">
+      <button id="btn-encrypt" class="btn-primary">암호화 ↓</button>
+      <button id="btn-decrypt" class="btn-ghost">복호화 ↑</button>
+    </div>
+
+    <div class="flex items-center justify-between mb-2">
+      <label class="text-xs font-medium text-slate-400">암호문 (<span class="enc-label font-mono text-neon">base64</span>)</label>
+      <button id="btn-copy" class="text-xs text-slate-500 hover:text-neon transition-colors">복사</button>
+    </div>
+    <textarea id="ciphertext" rows="4" spellcheck="false"
+              class="field font-mono resize-y text-neon-soft" placeholder="암호문이 여기에 표시됩니다…"></textarea>
+  </section>
+
+  <!-- ===== 파일 모드 ===== -->
+  <section id="panel-file" class="hidden">
+    <div id="dropzone"
+         class="dropzone rounded-2xl border-2 border-dashed border-edge bg-panel/40 p-10 text-center cursor-pointer transition-all">
+      <input id="file-input" type="file" class="hidden" />
+      <div class="text-slate-500 text-sm">
+        <div class="text-3xl mb-2">⬆</div>
+        <span id="file-label">파일을 드래그하거나 클릭해 선택</span>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-3 mt-5">
+      <button id="btn-file-encrypt" class="btn-primary">암호화 → .enc 다운로드</button>
+      <button id="btn-file-decrypt" class="btn-ghost">복호화 → 원본 다운로드</button>
+    </div>
+    <p class="mt-3 text-xs text-slate-600">
+      파일은 최대 190바이트(2048비트 키) 단위로 분할해 블록마다 RSA-OAEP 암호화됩니다. (최대 25MB)
+    </p>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/rsa.js') }}"></script>
+{% endblock %}

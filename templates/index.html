@@ -5,7 +5,7 @@
 <section class="text-center mb-14">
   <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-edge bg-panel/60 text-xs text-slate-400 mb-5">
     <span class="w-1.5 h-1.5 rounded-full bg-neon animate-pulse"></span>
-    pycryptodome · 3DES · AES · ARC4
+    pycryptodome · 3DES · AES · ARC4 · RSA · ECDSA
   </div>
   <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-50">
     Cipher<span class="text-neon glow-text">Lab</span>
@@ -28,5 +28,14 @@
     <div class="text-[11px] font-mono text-slate-500 border-t border-edge/60 pt-3">{{ m.tagline }}</div>
   </a>
   {% endfor %}
+  <a href="{{ url_for('sign_page') }}"
+     class="card group relative p-6 rounded-2xl border border-edge bg-panel/70 hover:border-violet/50 transition-all">
+    <div class="flex items-center justify-between mb-4">
+      <span class="font-mono text-lg font-bold text-slate-100 group-hover:text-violet transition-colors">전자서명</span>
+      <span class="text-slate-600 group-hover:text-violet transition-colors">→</span>
+    </div>
+    <p class="text-sm text-slate-400 leading-relaxed mb-4">개인키로 메시지에 서명하고 공개키로 검증합니다. RSA(PKCS#1 v1.5)와 ECDSA(P-256) 두 가지 방식을 지원합니다.</p>
+    <div class="text-[11px] font-mono text-slate-500 border-t border-edge/60 pt-3">RSA · ECDSA (P-256) · SHA-256 · 서버 저장 키쌍</div>
+  </a>
 </section>
 {% endblock %}

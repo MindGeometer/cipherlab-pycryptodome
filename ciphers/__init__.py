@@ -8,6 +8,7 @@ from __future__ import annotations
 from .aes_cipher import AesCipher
 from .arc4_cipher import Arc4Cipher
 from .des3_cipher import Des3Cipher
+from .rsa_cipher import RsaCipher
 
 # UI/라우팅에서 참조하는 암호 메타데이터.
 #   uses_iv: IV(ivtext) 입력을 노출할지 여부 (ARC4는 IV 없음)
@@ -35,6 +36,16 @@ CIPHERS: dict[str, dict] = {
         "uses_iv": False,
         "tagline": "스트림 암호 · raw 키 · IV/패딩 없음",
         "description": "패스프레이즈 바이트를 그대로 키로 쓰는 스트림 암호입니다. 키 길이는 1~256바이트로 가변이며, 블록·운용 모드·IV·패딩이 없습니다.",
+    },
+    "rsa": {
+        "cls": RsaCipher,
+        "name": "RSA",
+        "full_name": "RSA (OAEP)",
+        "uses_iv": False,
+        "needs_passphrase": False,
+        "template": "rsa.html",
+        "tagline": "공개키 암호 · OAEP · 서버 저장 키쌍",
+        "description": "공개키로 암호화하고 개인키로 복호화하는 비대칭 암호입니다. 키쌍을 생성한 후 메시지나 파일을 암·복호화하세요.",
     },
 }
 

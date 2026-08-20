@@ -12,6 +12,10 @@ wheels/
 # App runtime artifacts
 uploads/*
 !uploads/.gitkeep
+
+# 생성된 키 파일 (개인키 포함 — 절대 커밋하지 말 것)
+keys/*
+!keys/.gitkeep
 *.enc
 *.dec
 
